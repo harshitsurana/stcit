@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{%block content%}
+<!-- Example row of columns -->
+<div class="row">
+	<div class="col-sm-12">
+	{% if user and not user.is_anonymous %}
+
+         <h1 style="color: #4D9A1A; font-weight: bold; text-align: center;"><strong>TEST FINISHED</strong></h1>
+         <h1 style="color: #4D9A1A; font-weight: bold; text-align: center;"><strong><a href="/lboard"> LEADERBOARD </a> TO SEE RESULTS</strong></h1>
+	{% endif %}
+	</div>
+</div>
+
+{%endblock%}
+
+
+
+
