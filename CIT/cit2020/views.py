@@ -6,6 +6,7 @@ from django.contrib import messages
 from . import models
 import datetime
 from django.urls import reverse_lazy
+from django.contrib.auth import logout
 
 def index(request):
 
@@ -13,13 +14,17 @@ def index(request):
 
     user = request.user
     if user.is_authenticated:
-        player = models.player.objects.get(user_id=request.user.pk)
-        if player.current_question > lastquestion:
-            return render(request, 'win.html', {'player': player})
-        if datetime.datetime.now()<datetime.datetime(2020,12,8,11,50,00,701322):
+        try:
+            player = models.player.objects.get(user_id=request.user.pk)
+        except:
+            logout(request)
+            return render(request, 'index_page.html')
+        if datetime.datetime.now()<datetime.datetime(2020,12,9,21,00,00,701322):
             return render(request, 'wait.html', {'player': player})
-        elif datetime.datetime.now()>datetime.datetime(2020,12,8,12,20,00,701322):
+        elif datetime.datetime.now()>datetime.datetime(2020,12,9,21,15,00,701322):
             return render(request, 'finish.html', {'player': player})
+        elif player.current_question > lastquestion:
+            return render(request, 'win.html', {'player': player})
         try:
             question = models.question.objects.get(Q_number=player.current_question)
             return render(request, 'question.html', {'player': player, 'question': question})
@@ -41,7 +46,7 @@ def save_profile(backend, user, response, *args, **kwargs):
             except:
                 player.name = response.get('given_name') + " " + response.get('family_name')
             player.save()
-            
+
 
 @login_required
 def answer(request):
@@ -59,7 +64,7 @@ def answer(request):
         if player.current_question > lastquestion:
             return render(request, 'win.html', {'player': player})
         return redirect(reverse_lazy('cit2020:index'))
-    
+
     if ans == question.answer:
         player.current_question = player.current_question + 1
         player.score = player.score + 4
@@ -68,9 +73,9 @@ def answer(request):
         question.accuracy = round(question.correct/(float(question.correct + question.wrong)),2)*100
         question.save()
         player.save()
-        
+
         return redirect(reverse_lazy('cit2020:index'))
-            
+
 
     elif ans=='0' or ans==None:
         player.current_question = player.current_question + 1
@@ -78,7 +83,7 @@ def answer(request):
         player.save()
 
         return redirect(reverse_lazy('cit2020:index'))
-        
+
     else:
         player.current_question = player.current_question + 1
         player.score = player.score - 1
@@ -99,8 +104,16 @@ def lboard(request):
 
     for pl in p:
         pl.rank = cur_rank
+        pl.save()
         cur_rank += 1
 
+    if request.user.is_authenticated:
+        try:
+            player = models.player.objects.get(user_id=request.user.pk)
+            rank = player.rank
+            return render(request, 'lboard.html', {'players': p, 'rank':rank})
+        except:
+            pass
     return render(request, 'lboard.html', {'players': p})
 
 def rules(request):
