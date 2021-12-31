@@ -19,9 +19,9 @@ def index(request):
         except:
             logout(request)
             return render(request, 'index_page.html')
-        if datetime.datetime.now()<datetime.datetime(2020,12,9,21,00,00,701322):
+        if datetime.datetime.now()<datetime.datetime(2021,12,30,21,00,00,701322):
             return render(request, 'wait.html', {'player': player})
-        elif datetime.datetime.now()>datetime.datetime(2020,12,9,21,15,00,701322):
+        elif datetime.datetime.now()>datetime.datetime(2022,12,9,21,15,00,701322):
             return render(request, 'finish.html', {'player': player})
         elif player.current_question > lastquestion:
             return render(request, 'win.html', {'player': player})
