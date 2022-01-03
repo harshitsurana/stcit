@@ -420,3 +420,20 @@ nav {
     margin-right: auto;
   }
 }
+
+.slots{
+display:flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+}
+.slot-button{
+  padding: 4px 8px;
+  margin: 5px;
+  color: #fff;
+  background: #111a2d;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+}
