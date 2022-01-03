@@ -184,3 +184,16 @@ def forms(request):
         player.save()
 
     return redirect(reverse_lazy('cit2020:index'))
+
+
+def qualify(request):
+    if request.user.is_superuser:
+        q=models.player.objects.filter(score__gte=0)
+        for pl in q :
+            pl.qualified=True
+            pl.slot=4
+            pl.save()
+
+        return redirect(reverse_lazy('cit2020:index'))
+    else:
+        return redirect(reverse_lazy('cit2020:index'))
