@@ -1,59 +1,33 @@
 {% extends 'base.html' %} {% block content %}
-<div class="container">
+
+<div class="slots-choose">
   <div class="container">
-      <h2>Please Choose Your Slot - </h2>
+
+    <h2>Please Choose Your Slot - </h2>
+
+    <form id="slot" method="post" action="/forms/">
+      {% csrf_token %}
+      <div class="options-block slots-block">
+        <div class="opt">
+          <input type="radio" name="slot" value="1" id="slot1" />
+          <label for="slot1">1 Jan 2022</label>
+        </div>
+        <div class="opt">
+          <input type="radio" name="slot" value="2" id="option2" />
+          <label for="option2">2 Jan 2022</label>
+        </div>
+        <div class="opt">
+          <input type="radio" name="slot" value="3" id="option3" />
+          <label for="option3">3 Jan 2022</label>
+        </div>
+      </div>
+      <div class="next-arrow-block">
+        <div class="next-arrow">
+          <input type="submit" value="Submit &#8594 " />
+        </div>
+      </div>
+    </form>
   </div>
-<form id="slot" method="post" action="/forms/">
-  {% csrf_token %}
-  <div class="options-block">
-    <div class="opt">
-      <input type="radio" name="slot" value="1" id="slot1" />
-      <label
-        for="slot1"
-        style="
-          user-select: none;
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          -o-user-select: none;
-          -user-select: none;
-        "
-        >1 Jan 2022</label
-      >
-    </div>
-    <div class="opt">
-      <input type="radio" name="slot" value="2" id="option2" />
-      <label
-        for="option2"
-        style="
-          user-select: none;
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          -o-user-select: none;
-          -user-select: none;
-        "
-        >2 Jan 2022</label
-      >
-    </div>
-    <div class="opt">
-      <input type="radio" name="slot" value="3" id="option3" />
-      <label
-        for="option3"
-        style="
-          user-select: none;
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          -o-user-select: none;
-          -user-select: none;
-        "
-        >3 Jan 2022</label
-      >
-    </div>
-  </div>
-  <div class="next-arrow-block">
-    <div class="next-arrow">
-      <input type="submit" value="SUBMIT &#8594 " />
-    </div>
-  </div>
-</form>
 </div>
+
 {% endblock content %}

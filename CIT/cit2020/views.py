@@ -7,8 +7,8 @@ import datetime
 from django.urls import reverse_lazy
 from django.contrib.auth import logout
 
-slot1_start=datetime.datetime(2022, 1, 4, 4, 40, 00, 701322)
-slot1_end=datetime.datetime(2022, 1, 1, 4, 40, 00, 701322)
+slot1_start=datetime.datetime(2022, 1, 3, 4, 40, 00, 701322)
+slot1_end=datetime.datetime(2023, 1, 4, 4, 40, 00, 701322)
 
 slot2_start=datetime.datetime(2022, 1, 1, 4, 40, 00, 701322)
 slot2_end=datetime.datetime(2022, 1, 1, 4, 40, 00, 701322)
