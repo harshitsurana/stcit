@@ -8,19 +8,19 @@ from django.urls import reverse_lazy
 from django.contrib.auth import logout
 
 slot1_start=datetime.datetime(2022, 1, 15, 9, 00, 00, 701322)
-slot1_end=datetime.datetime(2023, 1, 15, 12, 00, 00, 701322)
+slot1_end=datetime.datetime(2022, 1, 15, 12, 00, 00, 701322)
 
 
 slot2_start=datetime.datetime(2022, 1, 16, 9, 00, 00, 701322)
-slot2_end=datetime.datetime(2023, 1, 16, 12, 00, 00, 701322)
+slot2_end=datetime.datetime(2022, 1, 16, 12, 00, 00, 701322)
 
 
 slot3_start=datetime.datetime(2022, 1, 17, 9, 00, 00, 701322)
-slot3_end=datetime.datetime(2023, 1, 17, 12, 00, 00, 701322)
+slot3_end=datetime.datetime(2022, 1, 17, 12, 00, 00, 701322)
 
 
 final_start=datetime.datetime(2022, 1, 20, 9, 00, 00, 701322)
-final_end=datetime.datetime(2023, 1, 20, 12, 00, 00, 701322)
+final_end=datetime.datetime(2022, 1, 20, 12, 00, 00, 701322)
 
 
 
