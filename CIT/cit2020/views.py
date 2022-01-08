@@ -7,17 +7,22 @@ import datetime
 from django.urls import reverse_lazy
 from django.contrib.auth import logout
 
-slot1_start=datetime.datetime(2022, 1, 3, 4, 40, 00, 701322)
-slot1_end=datetime.datetime(2023, 1, 4, 4, 40, 00, 701322)
+slot1_start=datetime.datetime(2022, 1, 15, 9, 00, 00, 701322)
+slot1_end=datetime.datetime(2023, 1, 15, 12, 00, 00, 701322)
 
-slot2_start=datetime.datetime(2022, 1, 1, 4, 40, 00, 701322)
-slot2_end=datetime.datetime(2022, 1, 1, 4, 40, 00, 701322)
 
-slot3_start=datetime.datetime(2022, 1, 1, 4, 40, 00, 701322)
-slot3_end=datetime.datetime(2022, 1, 1, 4, 40, 00, 701322)
+slot2_start=datetime.datetime(2022, 1, 16, 9, 00, 00, 701322)
+slot2_end=datetime.datetime(2023, 1, 16, 12, 00, 00, 701322)
 
-final_start=datetime.datetime(2022, 1, 1, 4, 40, 00, 701322)
-final_end=datetime.datetime(2022, 1, 1, 4, 40, 00, 701322)
+
+slot3_start=datetime.datetime(2022, 1, 17, 9, 00, 00, 701322)
+slot3_end=datetime.datetime(2023, 1, 17, 12, 00, 00, 701322)
+
+
+final_start=datetime.datetime(2022, 1, 20, 9, 00, 00, 701322)
+final_end=datetime.datetime(2023, 1, 20, 12, 00, 00, 701322)
+
+
 
 def index(request):
 
@@ -48,6 +53,8 @@ def index(request):
             return render(request, 'wait.html', {'player': player})
         elif player.qualified==True and datetime.datetime.now() > final_end:
             return render(request, 'finish.html', {'player': player})
+        elif player.qualified==False and datetime.datetime.now() > slot3_end:
+            return render(request, 'luck.html', {'player': player})
         elif player.current_question > lastquestion:
             return render(request, 'win.html', {'player': player})
         try:
@@ -188,7 +195,7 @@ def forms(request):
 
 def qualify(request):
     if request.user.is_superuser:
-        q=models.player.objects.filter(score__gte=0)
+        q=models.player.objects.filter(score__gte=120)
         for pl in q :
             pl.qualified=True
             pl.slot=4
