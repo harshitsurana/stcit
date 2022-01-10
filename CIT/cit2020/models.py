@@ -7,6 +7,7 @@ class player(models.Model):
     name = models.CharField(max_length=128)
     current_question = models.IntegerField(default=1)
     score = models.IntegerField(default=0)
+    final_score = models.IntegerField(default=0)
     rank = models.IntegerField(default=0)
     timestamp = models.DateTimeField()
     slot = models.IntegerField(default=0)

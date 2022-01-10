@@ -9,5 +9,5 @@ urlpatterns = [
     path('lboard/', views.lboard , name='lboard'),
     path('rules/', views.rules , name='rules'),
     path('forms/', views.forms , name='forms'),
-    path('qualify/', views.qualify , name='qualify'),
+    path('qualify/<int:cutoff>', views.qualify , name='qualify'),
 ]
