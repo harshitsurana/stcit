@@ -69,6 +69,8 @@
               <b class="caret"></b>
             </a>
             <div class="dropdown-content">
+              <a href="{% url 'cit2020:view_profile' %}"><b>Profile</b></a>
+              <a href="{% url 'cit2020:update_profile' %}"><b>Edit Profile</b></a>
               <a href="{% url 'logout' %}?next={{ '/' }}"><b>Logout</b></a>
             </div>
           </li>
