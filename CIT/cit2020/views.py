@@ -223,8 +223,11 @@ def view_profile(request):
 
 @login_required
 def update_profile(request):
-    
     player = models.player.objects.get(user_id=request.user.pk)
+    
+    if player.details_updated == True:
+        return redirect(reverse_lazy('cit2020:view_profile'))
+
     form = Profileform(request.POST or None, instance=player)
     if request.method == 'POST':
         if form.is_valid():
