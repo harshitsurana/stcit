@@ -7,22 +7,19 @@ import datetime
 from django.urls import reverse_lazy
 from django.contrib.auth import logout
 
-slot1_start=datetime.datetime(2022, 1, 15, 9, 00, 00, 701322)
-slot1_end=datetime.datetime(2022, 1, 15, 12, 00, 00, 701322)
+slot1_start=datetime.datetime(2022, 1, 18, 19, 00, 00, 701322)
+slot1_end=datetime.datetime(2022, 1, 18, 19, 45, 00, 701322)
 
+slot2_start=datetime.datetime(2022, 1, 19, 19, 00, 00, 701322)
+slot2_end=datetime.datetime(2022, 1, 19, 19, 45, 00, 701322)
 
-slot2_start=datetime.datetime(2022, 1, 16, 9, 00, 00, 701322)
-slot2_end=datetime.datetime(2022, 1, 16, 12, 00, 00, 701322)
+slot3_start=datetime.datetime(2022, 1, 20, 20, 00, 00, 701322)
+slot3_end=datetime.datetime(2022, 1, 20, 20, 45, 00, 701322)
 
+round1_result=datetime.datetime(2022, 1, 21, 15, 00, 00, 701322)
 
-slot3_start=datetime.datetime(2022, 1, 17, 9, 00, 00, 701322)
-slot3_end=datetime.datetime(2022, 1, 17, 12, 00, 00, 701322)
-
-
-final_start=datetime.datetime(2022, 1, 20, 9, 00, 00, 701322)
-final_end=datetime.datetime(2022, 1, 20, 12, 00, 00, 701322)
-
-
+final_start=datetime.datetime(2022, 1, 22, 20, 00, 00, 701322)
+final_end=datetime.datetime(2022, 1, 22, 20, 45, 00, 701322)
 
 def index(request):
 
@@ -37,34 +34,37 @@ def index(request):
             return render(request, 'index_page.html')
         if player.slot < 1:
             return render(request, 'forms.html')
+        
+        elif player.qualified==True and datetime.datetime.now() < final_start:
+            return render(request, 'wait.html', {'player': player,})
+        elif player.qualified==True and datetime.datetime.now() > final_end:
+            return render(request, 'finish.html', {'player': player})
+        elif player.qualified==False and datetime.datetime.now() > round1_result:
+            return render(request, 'luck.html', {'player': player})
+
         elif player.slot == 1 and datetime.datetime.now() < slot1_start:
             return render(request, 'wait.html', {'player': player})
         elif player.slot == 1 and datetime.datetime.now() > slot1_end:
             return render(request, 'finish.html', {'player': player})
+        
         elif player.slot == 2 and datetime.datetime.now() < slot2_start:
             return render(request, 'wait.html', {'player': player})
         elif player.slot == 2 and datetime.datetime.now() > slot2_end:
             return render(request, 'finish.html', {'player': player})
+        
         elif player.slot == 3 and datetime.datetime.now() < slot3_start:
             return render(request, 'wait.html', {'player': player})
         elif player.slot == 3 and datetime.datetime.now() > slot3_end:
             return render(request, 'finish.html', {'player': player})
-        elif player.qualified==True and datetime.datetime.now() < final_start:
-            return render(request, 'wait.html', {'player': player})
-        elif player.qualified==True and datetime.datetime.now() > final_end:
-            return render(request, 'finish.html', {'player': player})
-        elif player.qualified==False and datetime.datetime.now() > slot3_end:
-            return render(request, 'luck.html', {'player': player})
+        
         elif player.current_question > lastquestion:
             return render(request, 'win.html', {'player': player})
         try:
-            question = models.question.objects.get(
-                Q_number=player.current_question)
+            question = models.question.objects.get(Q_number=player.current_question)
             return render(request, 'question.html', {'player': player, 'question': question})
         except models.question.DoesNotExist:
             return render(request, 'finish.html', {'player': player})
     return render(request, 'index_page.html')
-
 
 def save_profile(backend, user, response, *args, **kwargs):
     if backend.name == 'google-oauth2':
@@ -90,11 +90,10 @@ def answer(request):
     ans = ""
     if request.method == 'POST':
         ans = request.POST.get('option')
-        print(ans)
+        # print(ans)
     player = models.player.objects.get(user_id=request.user.pk)
     try:
-        question = models.question.objects.get(
-            Q_number=player.current_question)
+        question = models.question.objects.get(Q_number=player.current_question)
     except models.question.DoesNotExist:
         if player.current_question > lastquestion:
             return render(request, 'win.html', {'player': player})
@@ -102,7 +101,10 @@ def answer(request):
 
     if ans == question.answer:
         player.current_question = player.current_question + 1
-        player.score = player.score + 4
+        if player.qualified == True:
+            player.final_score = player.final_score + 4
+        else:
+            player.score = player.score + 4
         player.timestamp = datetime.datetime.now()
         question.correct = question.correct + 1
         question.accuracy = round(
@@ -121,7 +123,10 @@ def answer(request):
 
     else:
         player.current_question = player.current_question + 1
-        player.score = player.score - 1
+        if player.qualified == True:
+            player.final_score = player.final_score - 1
+        else:
+            player.score = player.score - 1
         player.timestamp = datetime.datetime.now()
         question.wrong = question.wrong + 1
         question.accuracy = round(
@@ -133,28 +138,33 @@ def answer(request):
 
 
 def lboard(request,slot=0):
+    is_final=False
+    if slot==0:
+        if datetime.datetime.now() > final_start:
+            slot=4
     if slot==1 :
         if datetime.datetime.now() < slot1_start:
-            return render(request, 'lboard.html',{})
+            return render(request, 'lboard.html',{'slot':slot})
         else :
             p = models.player.objects.filter(slot=1).order_by('-score', 'timestamp')
     elif slot==2:
         if datetime.datetime.now() < slot2_start:
-            return render(request, 'lboard.html',{})
+            return render(request, 'lboard.html',{'slot':slot})
         else :
             p = models.player.objects.filter(slot=2).order_by('-score', 'timestamp')
     elif slot==3:
         if datetime.datetime.now() < slot3_start:
-            return render(request, 'lboard.html',{})
+            return render(request, 'lboard.html',{'slot':slot})
         else :
             p = models.player.objects.filter(slot=3).order_by('-score', 'timestamp')
-    elif slot==0 :
+    elif slot==4 :
         if datetime.datetime.now() < final_start:
             return render(request, 'lboard.html',{})
         else :
-            p = models.player.objects.filter(qualified=True).order_by('-score', 'timestamp')
+            p = models.player.objects.filter(qualified=True).order_by('-final_score', 'timestamp')
+            is_final = True
     else :
-         return redirect('cit2020:lboard',slot=1)
+        return redirect('cit2020:lboard',slot=1)
 
     cur_rank = 1
     show=False
@@ -165,9 +175,9 @@ def lboard(request,slot=0):
         pl.rank = cur_rank
         # pl.save()
         cur_rank += 1
-        if show==True :
+        if show==True and pl.id == request.user.id:
             rank=pl.rank
-    return render(request, 'lboard.html', {'players': p, 'rank': rank})
+    return render(request, 'lboard.html', {'players': p, 'rank': rank, 'is_final':is_final,'slot':slot})
 
 def rules(request):
     return render(request, 'rules.html')
@@ -192,13 +202,16 @@ def forms(request):
 
     return redirect(reverse_lazy('cit2020:index'))
 
-
-def qualify(request):
+@login_required
+def qualify(request, cutoff):
     if request.user.is_superuser:
-        q=models.player.objects.filter(score__gte=120)
+        q=models.player.objects.all()
         for pl in q :
-            pl.qualified=True
-            pl.slot=4
+            if pl.score >= cutoff:
+                pl.qualified=True
+                pl.final_score=0
+            else:
+                pl.qualified=False
             pl.save()
 
         return redirect(reverse_lazy('cit2020:index'))
