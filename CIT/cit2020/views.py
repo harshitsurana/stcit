@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import models
 from . import models
 import datetime
+from django.utils import timezone
 from django.urls import reverse_lazy
 from django.contrib.auth import logout
 
@@ -105,7 +106,8 @@ def answer(request):
             player.final_score = player.final_score + 4
         else:
             player.score = player.score + 4
-        player.timestamp = datetime.datetime.now()
+        # player.timestamp = datetime.datetime.now()
+        player.timestamp = timezone.now()
         question.correct = question.correct + 1
         question.accuracy = round(
             question.correct/(float(question.correct + question.wrong)), 2)*100
@@ -116,7 +118,8 @@ def answer(request):
 
     elif ans == '0' or ans == None:
         player.current_question = player.current_question + 1
-        player.timestamp = datetime.datetime.now()
+        # player.timestamp = datetime.datetime.now()
+        player.timestamp = timezone.now()
         player.save()
 
         return redirect(reverse_lazy('cit2020:index'))
@@ -127,7 +130,8 @@ def answer(request):
             player.final_score = player.final_score - 1
         else:
             player.score = player.score - 1
-        player.timestamp = datetime.datetime.now()
+        # player.timestamp = datetime.datetime.now()
+        player.timestamp = timezone.now()
         question.wrong = question.wrong + 1
         question.accuracy = round(
             question.correct/(float(question.correct + question.wrong)), 2)*100
