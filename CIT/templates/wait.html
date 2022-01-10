@@ -14,23 +14,29 @@
 </div>
 
 <script>
-     // Set the date we're counting down to
-     var countDownDate
-     if ({{player.slot}}==1) {
-       // slot 1 date
-         countDownDate = new Date("Jan 15, 2022 11:05:00").getTime();
-          } else if ({{player.slot}}==2) {
-
-            // slot 2 date 
-            countDownDate = new Date("Jan 16, 2022 11:05:00").getTime();
-       } else if ({{player.slot}}==3) {
-
+      True = 1
+      False=0
+      var countDownDate
+      if ({{player.qualified}}) {
+        // Final slot date
+        countDownDate = new Date("Jan 22, 2022 20:00:00").getTime();
+      }
+      else if ({{player.slot}}==1) {
+        // slot 1 date
+        countDownDate = new Date("Jan 18, 2022 19:00:00").getTime();
+      } 
+      else if ({{player.slot}}==2) {
+        // slot 2 date 
+        countDownDate = new Date("Jan 19, 2022 19:00:00").getTime();
+      } 
+      else if ({{player.slot}}==3) {
         // slot 3 date 
-            countDownDate = new Date("Jan 17, 2022 11:05:00").getTime();
-       } else{
-          // final slot date 
-        countDownDate = new Date("Jan 20, 2022 11:05:00").getTime();
-       }
+        countDownDate = new Date("Jan 20, 2022 20:00:00").getTime();
+      } 
+      else{
+        // final slot date 
+        countDownDate = new Date("Jan 22, 2022 20:00:00").getTime();
+      }
       
 
      // Update the count down every 1 second
