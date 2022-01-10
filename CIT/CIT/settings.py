@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'social_django',
     'crispy_forms',
+    'widget_tweaks',
     'cit2020',
 ]
 
