@@ -168,8 +168,10 @@ def lboard(request,slot=0):
 
     cur_rank = 1
     show=False
-    if request.user.is_authenticated and (models.player.slot==slot or models.player.qualified==True) :
-        show=True
+    if request.user.is_authenticated:
+        player = models.player.objects.get(user_id=request.user.pk)
+        if (player.slot==slot or player.qualified==True) :
+            show=True
     rank=0
     for pl in p:
         pl.rank = cur_rank
