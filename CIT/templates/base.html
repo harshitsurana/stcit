@@ -55,9 +55,9 @@
       <div class="nav">
         <ol>
           <li><a href="http://istenitdgp.com/">ISTE</a></li>
-          <li><a href="/">CIT</a></li>
-          <li><a href="/rules">Rules</a></li>
-          <li><a href="/lboard/1">Leaderboard</a></li>
+          <li><a href="{% url 'cit2020:index' %}">CIT</a></li>
+          <li><a href="{% url 'cit2020:rules' %}">Rules</a></li>
+          <li><a href="{% url 'cit2020:lboard' %}">Leaderboard</a></li>
 
           {% if user.is_anonymous %}
           <li><a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">G-Login</a></li>
