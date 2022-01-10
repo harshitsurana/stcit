@@ -7,6 +7,7 @@ import datetime
 from django.utils import timezone
 from django.urls import reverse_lazy
 from django.contrib.auth import logout
+from .forms import Profileform
 
 slot1_start=datetime.datetime(2022, 1, 18, 19, 00, 00, 701322)
 slot1_end=datetime.datetime(2022, 1, 18, 19, 45, 00, 701322)
@@ -33,7 +34,11 @@ def index(request):
         except:
             logout(request)
             return render(request, 'index_page.html')
-        if player.slot < 1:
+        
+        if player.details_updated == False:
+            return redirect(reverse_lazy('cit2020:update_profile'))
+        
+        elif player.slot < 1:
             return render(request, 'forms.html')
         
         elif player.qualified==True and datetime.datetime.now() < final_start:
@@ -74,14 +79,14 @@ def save_profile(backend, user, response, *args, **kwargs):
             player = models.player.objects.get(user=profile)
         except:
             player = models.player(user=profile)
-            player.timestamp = datetime.datetime.now()
+            player.email = response.get('email')
+            player.timestamp = timezone.now()
             try:
                 player.name = response.get('name')
             except:
                 player.name = response.get(
                     'given_name') + " " + response.get('family_name')
             player.save()
-
 
 @login_required
 def answer(request):
@@ -209,12 +214,36 @@ def forms(request):
     return redirect(reverse_lazy('cit2020:index'))
 
 @login_required
+def view_profile(request):  
+    player = models.player.objects.get(user_id=request.user.pk)
+    final = False
+    if datetime.datetime.now() > round1_result:
+        final = True
+    return render(request,'view_profile.html',{'player':player, 'final':final})
+
+@login_required
+def update_profile(request):
+    
+    player = models.player.objects.get(user_id=request.user.pk)
+    form = Profileform(request.POST or None, instance=player)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            player.details_updated = True
+            player.save()
+            return redirect(reverse_lazy('cit2020:index'))
+        else:
+            return render(request,'update_profile.html',{'form':form})
+    return render(request,'update_profile.html',{'form':form})
+
+@login_required
 def qualify(request, cutoff):
     if request.user.is_superuser:
         q=models.player.objects.all()
         for pl in q :
             if pl.score >= cutoff:
                 pl.qualified=True
+                pl.current_question = 1
                 pl.final_score=0
             else:
                 pl.qualified=False
