@@ -41,27 +41,27 @@ def index(request):
         elif player.slot < 1:
             return render(request, 'forms.html')
         
-        # elif player.qualified==True and datetime.datetime.now() < final_start:
-        #     return render(request, 'wait.html', {'player': player,})
-        # elif player.qualified==True and datetime.datetime.now() > final_end:
-        #     return render(request, 'finish.html', {'player': player})
-        # elif player.qualified==False and datetime.datetime.now() > round1_result:
-        #     return render(request, 'luck.html', {'player': player})
+        elif player.qualified==True and datetime.datetime.now() < final_start:
+            return render(request, 'wait.html', {'player': player,})
+        elif player.qualified==True and datetime.datetime.now() > final_end:
+            return render(request, 'finish.html', {'player': player})
+        elif player.qualified==False and datetime.datetime.now() > round1_result:
+            return render(request, 'luck.html', {'player': player})
 
-        # elif player.slot == 1 and datetime.datetime.now() < slot1_start:
-        #     return render(request, 'wait.html', {'player': player})
-        # elif player.slot == 1 and datetime.datetime.now() > slot1_end:
-        #     return render(request, 'finish.html', {'player': player})
+        elif player.slot == 1 and datetime.datetime.now() < slot1_start:
+            return render(request, 'wait.html', {'player': player})
+        elif player.slot == 1 and datetime.datetime.now() > slot1_end:
+            return render(request, 'finish.html', {'player': player})
         
-        # elif player.slot == 2 and datetime.datetime.now() < slot2_start:
-        #     return render(request, 'wait.html', {'player': player})
-        # elif player.slot == 2 and datetime.datetime.now() > slot2_end:
-        #     return render(request, 'finish.html', {'player': player})
+        elif player.slot == 2 and datetime.datetime.now() < slot2_start:
+            return render(request, 'wait.html', {'player': player})
+        elif player.slot == 2 and datetime.datetime.now() > slot2_end:
+            return render(request, 'finish.html', {'player': player})
         
-        # elif player.slot == 3 and datetime.datetime.now() < slot3_start:
-        #     return render(request, 'wait.html', {'player': player})
-        # elif player.slot == 3 and datetime.datetime.now() > slot3_end:
-        #     return render(request, 'finish.html', {'player': player})
+        elif player.slot == 3 and datetime.datetime.now() < slot3_start:
+            return render(request, 'wait.html', {'player': player})
+        elif player.slot == 3 and datetime.datetime.now() > slot3_end:
+            return render(request, 'finish.html', {'player': player})
         
         elif player.current_question > lastquestion:
             return render(request, 'win.html', {'player': player})
@@ -249,6 +249,9 @@ def update_profile(request):
 def qualify(request, cutoff):
     if request.user.is_superuser:
         q=models.player.objects.all()
+        lastquestion = models.question.objects.all().count()
+        if datetime.datetime.now() > final_start:
+            return redirect(reverse_lazy('cit2020:lboard'))
         for pl in q :
             if pl.score >= cutoff:
                 pl.qualified=True
@@ -256,6 +259,7 @@ def qualify(request, cutoff):
                 pl.final_score=0
             else:
                 pl.qualified=False
+                pl.current_question = lastquestion
             pl.save()
 
         return redirect(reverse_lazy('cit2020:index'))
