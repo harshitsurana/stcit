@@ -72,7 +72,11 @@ def index(request):
             return render(request, 'question.html', {'player': player, 'question': question})
         except models.question.DoesNotExist:
             return render(request, 'finish.html', {'player': player})
-    return render(request, 'index_page.html')
+    
+    final_started = False
+    if datetime.datetime.now() > round1_result:
+        final_started = True
+    return render(request, 'index_page.html',{'final_started':final_started})
 
 def save_profile(backend, user, response, *args, **kwargs):
     if backend.name == 'google-oauth2':

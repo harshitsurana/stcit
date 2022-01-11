@@ -31,7 +31,11 @@
                 <p id="demo">START!</p>
         </div>
         <div class="login">
+            {% if final_started %}
+            <h3>Login to Start Quiz!</h3><br>
+            {% else %}
             <h3>Login to Book Slot for Qualifier Round !</h3><br>
+            {% endif %}
             <button class="login-button" onclick="window.location='{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}';">Login With Google</button>
         </div>
     </div>
