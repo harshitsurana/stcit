@@ -37,7 +37,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% if is_final == "True" %}
+                {% if is_final == True %}
                     {% for player in players %}
                     {% if rank == player.rank %}
                     <tr class="highlight-rank" >
