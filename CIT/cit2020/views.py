@@ -41,27 +41,27 @@ def index(request):
         elif player.slot < 1:
             return render(request, 'forms.html')
         
-        elif player.qualified==True and datetime.datetime.now() < final_start:
-            return render(request, 'wait.html', {'player': player,})
-        elif player.qualified==True and datetime.datetime.now() > final_end:
-            return render(request, 'finish.html', {'player': player})
-        elif player.qualified==False and datetime.datetime.now() > round1_result:
-            return render(request, 'luck.html', {'player': player})
+        # elif player.qualified==True and datetime.datetime.now() < final_start:
+        #     return render(request, 'wait.html', {'player': player,})
+        # elif player.qualified==True and datetime.datetime.now() > final_end:
+        #     return render(request, 'finish.html', {'player': player})
+        # elif player.qualified==False and datetime.datetime.now() > round1_result:
+        #     return render(request, 'luck.html', {'player': player})
 
-        elif player.slot == 1 and datetime.datetime.now() < slot1_start:
-            return render(request, 'wait.html', {'player': player})
-        elif player.slot == 1 and datetime.datetime.now() > slot1_end:
-            return render(request, 'finish.html', {'player': player})
+        # elif player.slot == 1 and datetime.datetime.now() < slot1_start:
+        #     return render(request, 'wait.html', {'player': player})
+        # elif player.slot == 1 and datetime.datetime.now() > slot1_end:
+        #     return render(request, 'finish.html', {'player': player})
         
-        elif player.slot == 2 and datetime.datetime.now() < slot2_start:
-            return render(request, 'wait.html', {'player': player})
-        elif player.slot == 2 and datetime.datetime.now() > slot2_end:
-            return render(request, 'finish.html', {'player': player})
+        # elif player.slot == 2 and datetime.datetime.now() < slot2_start:
+        #     return render(request, 'wait.html', {'player': player})
+        # elif player.slot == 2 and datetime.datetime.now() > slot2_end:
+        #     return render(request, 'finish.html', {'player': player})
         
-        elif player.slot == 3 and datetime.datetime.now() < slot3_start:
-            return render(request, 'wait.html', {'player': player})
-        elif player.slot == 3 and datetime.datetime.now() > slot3_end:
-            return render(request, 'finish.html', {'player': player})
+        # elif player.slot == 3 and datetime.datetime.now() < slot3_start:
+        #     return render(request, 'wait.html', {'player': player})
+        # elif player.slot == 3 and datetime.datetime.now() > slot3_end:
+        #     return render(request, 'finish.html', {'player': player})
         
         elif player.current_question > lastquestion:
             return render(request, 'win.html', {'player': player})
@@ -89,7 +89,7 @@ def save_profile(backend, user, response, *args, **kwargs):
             player.save()
 
 @login_required
-def answer(request):
+def answer(request, q_no):
 
     lastquestion = models.question.objects.all().count()
     ans = ""
@@ -97,6 +97,8 @@ def answer(request):
         ans = request.POST.get('option')
         # print(ans)
         player = models.player.objects.get(user_id=request.user.pk)
+        if q_no != player.current_question:
+            return redirect(reverse_lazy('cit2020:index'))
         try:
             question = models.question.objects.get(Q_number=player.current_question)
         except models.question.DoesNotExist:

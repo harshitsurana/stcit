@@ -26,7 +26,7 @@
 
   {%endif%}
 
-        <form id="ans" method="post" action="/answer/">
+        <form id="ans" method="post" action="{% url 'cit2020:answer' q_no=question.Q_number %}">
             {% csrf_token %}
             <div class="options-block">
                 <div class="opt">
