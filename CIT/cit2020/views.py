@@ -92,56 +92,55 @@ def save_profile(backend, user, response, *args, **kwargs):
 def answer(request):
 
     lastquestion = models.question.objects.all().count()
-
     ans = ""
     if request.method == 'POST':
         ans = request.POST.get('option')
         # print(ans)
-    player = models.player.objects.get(user_id=request.user.pk)
-    try:
-        question = models.question.objects.get(Q_number=player.current_question)
-    except models.question.DoesNotExist:
-        if player.current_question > lastquestion:
-            return render(request, 'win.html', {'player': player})
-        return redirect(reverse_lazy('cit2020:index'))
+        player = models.player.objects.get(user_id=request.user.pk)
+        try:
+            question = models.question.objects.get(Q_number=player.current_question)
+        except models.question.DoesNotExist:
+            if player.current_question > lastquestion:
+                return render(request, 'win.html', {'player': player})
+            return redirect(reverse_lazy('cit2020:index'))
 
-    if ans == question.answer:
-        player.current_question = player.current_question + 1
-        if player.qualified == True:
-            player.final_score = player.final_score + 4
+        if ans == question.answer:
+            player.current_question = player.current_question + 1
+            if player.qualified == True:
+                player.final_score = player.final_score + 4
+            else:
+                player.score = player.score + 4
+            # player.timestamp = datetime.datetime.now()
+            player.timestamp = timezone.now()
+            question.correct = question.correct + 1
+            question.accuracy = round(
+                question.correct/(float(question.correct + question.wrong)), 2)*100
+            question.save()
+            player.save()
+        
+            return redirect(reverse_lazy('cit2020:index'))
+
+        elif ans == '0' or ans == None:
+            player.current_question = player.current_question + 1
+            # player.timestamp = datetime.datetime.now()
+            player.timestamp = timezone.now()
+            player.save()
+
+            return redirect(reverse_lazy('cit2020:index'))
+
         else:
-            player.score = player.score + 4
-        # player.timestamp = datetime.datetime.now()
-        player.timestamp = timezone.now()
-        question.correct = question.correct + 1
-        question.accuracy = round(
-            question.correct/(float(question.correct + question.wrong)), 2)*100
-        question.save()
-        player.save()
-      
-        return redirect(reverse_lazy('cit2020:index'))
-
-    elif ans == '0' or ans == None:
-        player.current_question = player.current_question + 1
-        # player.timestamp = datetime.datetime.now()
-        player.timestamp = timezone.now()
-        player.save()
-
-        return redirect(reverse_lazy('cit2020:index'))
-
-    else:
-        player.current_question = player.current_question + 1
-        if player.qualified == True:
-            player.final_score = player.final_score - 1
-        else:
-            player.score = player.score - 1
-        # player.timestamp = datetime.datetime.now()
-        player.timestamp = timezone.now()
-        question.wrong = question.wrong + 1
-        question.accuracy = round(
-            question.correct/(float(question.correct + question.wrong)), 2)*100
-        question.save()
-        player.save()
+            player.current_question = player.current_question + 1
+            if player.qualified == True:
+                player.final_score = player.final_score - 1
+            else:
+                player.score = player.score - 1
+            # player.timestamp = datetime.datetime.now()
+            player.timestamp = timezone.now()
+            question.wrong = question.wrong + 1
+            question.accuracy = round(
+                question.correct/(float(question.correct + question.wrong)), 2)*100
+            question.save()
+            player.save()
 
     return redirect(reverse_lazy('cit2020:index'))
 
