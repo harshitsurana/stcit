@@ -1,43 +1,43 @@
 {% extends 'base.html' %} {% block content %}
 {% load widget_tweaks %}
 
-<div class="">
+<div class="view-profile">
   <div class="container">
     <br>
-    <h1 style="text-align: center; text-decoration: underline;text-decoration-style: dotted;">Your Profile </h1>
+    <h1>Your Profile :- </h1>
     <br>
     <div class="row">
     <div class="col-md-12 col-lg-6 mb-2">
-        <h4><strong>Name:</strong> {{player.name}}</h4>  
-        <h4><strong>Email Id:</strong> {{player.email}}</h4>
-        <h4><strong>Mobile No.:</strong> {{player.mobile}}</h4>
-        <h4><strong>School/College:</strong> {{player.institute_name}}</h4>
-        <h4><strong>Year of Study:</strong> {{player.year_of_study}}</h4>
-        <h4><strong>Department:</strong> {{player.department}}</h4>
+        <h4><strong>Name : </strong> {{player.name}}</h4>  
+        <h4><strong>Email Id : </strong> {{player.email}}</h4>
+        <h4><strong>Mobile No : </strong> {{player.mobile}}</h4>
+        <h4><strong>School/College : </strong> {{player.institute_name}}</h4>
+        <h4><strong>Year of Study : </strong> {{player.year_of_study}}</h4>
+        <h4><strong>Department : </strong> {{player.department}}</h4>
     </div>
     <div class="col-md-12 col-lg-6 mb-2">
         {% if player.slot == 0 %}
-        <h3><strong>Preliminary Round: </strong>Select <a href="{% url 'cit2020:index' %}"><strong>Slot</strong></a></h3>
+        <h3><strong>Preliminary Round : </strong>Select <a href="{% url 'cit2020:index' %}"><strong>Slot</strong></a></h3>
         {% else %}
-        <h3><strong>Preliminary Round: </strong></h3>
+        <h3><strong>Preliminary Round : </strong></h3>
         <h4><strong>Slot: </strong> 
             {% if player.slot == 1 %} (1) Jan 18, 2021 (7:00 PM - 7:45 PM)
             {% elif player.slot == 2 %} (2) Jan 19, 2021 (7:00 PM - 7:45 PM)
             {% elif player.slot == 3 %} (3) Jan 20, 2021 (8:00 PM - 8:45 PM)
             {% endif %}
         </h4>
-        <h4><strong>Score: </strong> {{player.score}}</h4>
+        <h4><strong>Score : </strong> {{player.score}}</h4>
         {% if final == False %}
-        <h4><strong>Selected for Final: </strong> -- </h4>
+        <h4><strong>Selected for Final : </strong> -- </h4>
         {% elif player.qualified == True %}
-        <h4><strong>Selected for Final: </strong> Yes </h4>
+        <h4><strong>Selected for Final : </strong> Yes </h4>
         {% else %}
-        <h4><strong>Selected for Final: </strong> No </h4>
+        <h4><strong>Selected for Final : </strong> No </h4>
         {% endif %}
         {% if player.qualified == True %}
-        <h3><strong>Final Round: </strong></h3>
-        <h4><strong>Slot: </strong> Jan 22, 2021 (8:00 PM - 8:45 PM)</h4>
-        <h4><strong>Score: </strong> {{player.final_score}}</h4>
+        <h3><strong>Final Round : </strong></h3>
+        <h4><strong>Slot : </strong> Jan 22, 2021 (8:00 PM - 8:45 PM)</h4>
+        <h4><strong>Score : </strong> {{player.final_score}}</h4>
         {% endif %}
         {% endif %}    
     </div>
