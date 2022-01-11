@@ -19,7 +19,7 @@
         {% if player.slot == 0 %}
         <h3><strong>Preliminary Round : </strong>Select <a href="{% url 'cit2020:index' %}"><strong>Slot</strong></a></h3>
         {% else %}
-        <h3><strong>Preliminary Round : </strong></h3>
+        <h3><strong>Qualifier Round : </strong></h3>
         <h4><strong>Slot: </strong> 
             {% if player.slot == 1 %} (1) Jan 18, 2021 (7:00 PM - 7:45 PM)
             {% elif player.slot == 2 %} (2) Jan 19, 2021 (7:00 PM - 7:45 PM)
