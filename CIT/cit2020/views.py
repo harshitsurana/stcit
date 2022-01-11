@@ -45,6 +45,8 @@ def index(request):
             return render(request, 'wait.html', {'player': player,})
         elif player.qualified==True and datetime.datetime.now() > final_end:
             return render(request, 'finish.html', {'player': player})
+        elif player.qualified==True:
+            pass
         elif player.qualified==False and datetime.datetime.now() > round1_result:
             return render(request, 'luck.html', {'player': player})
 
