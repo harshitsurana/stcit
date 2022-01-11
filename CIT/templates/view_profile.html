@@ -13,7 +13,9 @@
         <h4><strong>Mobile No : </strong> {{player.mobile}}</h4>
         <h4><strong>School/College : </strong> {{player.institute_name}}</h4>
         <h4><strong>Year of Study : </strong> {{player.year_of_study}}</h4>
+        {% if player.department %}
         <h4><strong>Department : </strong> {{player.department}}</h4>
+        {% endif %}
     </div>
     <div class="col-md-12 col-lg-6 mb-2">
         {% if player.slot == 0 %}

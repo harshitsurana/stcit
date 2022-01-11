@@ -271,3 +271,23 @@ def qualify(request, cutoff):
         return redirect(reverse_lazy('cit2020:index'))
     else:
         return redirect(reverse_lazy('cit2020:index'))
+
+@login_required
+def finalize_rank(request):
+    if request.user.is_superuser:
+        p = models.player.objects.filter(qualified=True).order_by('-final_score', '-score', 'timestamp')
+        q=models.player.objects.filter(qualified=False).order_by('-score', 'timestamp')
+        if datetime.datetime.now() < final_end:
+            return redirect(reverse_lazy('cit2020:rules'))
+        cur_rank=1
+        for pl in p:
+            pl.rank = cur_rank
+            pl.save()
+            cur_rank += 1
+        for pl in q:
+            pl.rank = cur_rank
+            pl.save()
+            cur_rank += 1
+        return redirect(reverse_lazy('cit2020:lboard'))
+    else:
+        return redirect(reverse_lazy('cit2020:index'))

@@ -13,4 +13,5 @@ urlpatterns = [
     path('profile/', views.view_profile , name='view_profile'),
     path('profile/update', views.update_profile , name='update_profile'),
     path('qualify/<int:cutoff>', views.qualify , name='qualify'),
+    path('finalize_rank/', views.finalize_rank , name='finalize_rank'),
 ]
