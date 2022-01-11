@@ -192,6 +192,11 @@ def lboard(request,slot=0):
 def rules(request):
     return render(request, 'rules.html')
 
+def about(request):
+    if not request.user.is_authenticated:
+        return redirect(reverse_lazy('cit2020:index'))
+    return render(request, 'about.html')
+
 
 @login_required
 def forms(request):

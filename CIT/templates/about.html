@@ -1,0 +1,79 @@
+{%extends 'base.html'%}
+{% load static %} 
+{% block content %}
+
+<style>
+.social_icon .container {
+  font-family: "Cabin", sans-serif;
+  background-color: white;
+  margin-top: 30px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+</style>
+
+<div class="section section1">
+    <div class="container">
+        <h1 class="title"> <strong> Cognitive Intelligence Test 5.0 </strong> </h1>
+        <p style="font-weight: bold;">
+            Cognitive Intelligence test is the newest member in the chapter's list of
+            events. It is an online event where sets of questions are designed similar
+            to that of a screening process in company.CIT not only provides an idea
+            about the level of competition but also gives a chance to rectify oneself.
+            The test comprises of basic mathematical aptitude, verbal and logical
+            reasoning and data interpretation. This is one of the finest opportunities
+            to test one's skills and be better before the ultimate showdown.
+        </p>
+        </div>
+</div>
+
+<div class="social_icon">
+    <div class="container">
+        <div style="text-align: center;">
+            <h3>Follow Us On !!</h3>
+                <!-- <p id="demo">START!</p> -->
+                <a href="https://www.facebook.com/istenitdgp/" target='_blank'><i class="fab fa-facebook-f fa-2x me-3" style="color: #3b5998;"></i></a>
+                <a href="https://www.instagram.com/istenitdgp/" target='_blank'><i class="fab fa-instagram fa-2x me-3" style="color: #ac2bac;"></i></a>
+                <a href="https://www.linkedin.com/company/istenitdgp/" target='_blank'><i class="fab fa-linkedin-in fa-2x me-3" style="color: #0082ca;"></i></a>
+                
+    </div>
+</div>
+</div>
+
+<div class="section prizes-section">
+    <div class="container">
+        <div class="col-lg-12 ">
+            <h2><strong>Cash PRIZES worth Rs. 7.5K For CIT 5.0</strong></p>
+                <img src="{% static 'img/prize1.jpeg'%}" alt="PRIZES">
+        </div>
+    </div>
+</div>
+
+<div class="section section1">
+    <div class="container">
+        <h2><strong>Schedule For CIT 5.0</strong></h2>    
+            <b>Qualifier Round:</b> Candidates can attempt CIT only once in any of the three available slots:
+            <li><b>Slot 1:</b> January 18, 2021 (7:00 PM - 7:45 PM)</li>
+            <li><b>Slot 2:</b> January 19, 2021 (7:00 PM - 7:45 PM)</li>
+            <li><b>Slot 3:</b> January 20, 2021 (8:00 PM - 8:45 PM)</li>
+            <b>Final Round:</b> Candidates selected for final round will receive a mail with details
+            <li><b>Final:</b> January 22, 2021 (8:00 PM - 8:45 PM)</li>
+        </div>
+</div>
+
+<div class="section sponsors-section">
+    <div class="container">
+        <div class="col-lg-12 ">
+            <h2><strong>EVENT SPONSOR</strong></p>
+                <img src="{% static 'img/ims.png'%}" alt="IMS"
+                    style="margin-right: 10px; padding-bottom: 0;">
+                <!-- <img src="{% static 'img/iocl.png'%}" alt="IOCL"
+                    style="padding-bottom: 0;"> -->
+        </div>
+    </div>
+</div>
+
+{%endblock%}

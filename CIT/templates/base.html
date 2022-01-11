@@ -50,12 +50,15 @@
 <body>
   <div class="wrapper">
     <nav>
-      <p class="Logo"><a href="/">Cognitive Intelligence Test</a></p>
+      <p class="Logo"><a href="{% url 'cit2020:index' %}">Cognitive Intelligence Test</a></p>
       <input type="checkbox" name="" class="btn" />
       <div class="nav">
         <ol>
-          <li><a href="http://istenitdgp.com/">ISTE</a></li>
+          <li><a href="http://istenitdgp.com/" target='_blank'>ISTE</a></li>
+          {% if "/" == request.path %}
+          {% else %}
           <li><a href="{% url 'cit2020:index' %}">CIT</a></li>
+          {% endif %}
           <li><a href="{% url 'cit2020:rules' %}">Rules</a></li>
           <li><a href="{% url 'cit2020:lboard' %}">Leaderboard</a></li>
 
@@ -63,6 +66,7 @@
           <li><a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">G-Login</a></li>
           {% endif %}
           {% if user and not user.is_anonymous %}
+          <li><a href="{% url 'cit2020:about' %}">About</a></li>
           <li class="drop-down">
             <a href="#" data-toggle="dropdown" class="dropdown-toggle">
               {{ user.get_full_name|default:user.username }}
