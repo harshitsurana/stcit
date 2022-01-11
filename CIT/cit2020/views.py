@@ -182,14 +182,14 @@ def lboard(request,slot=0):
     show=False
     if request.user.is_authenticated:
         player = models.player.objects.get(user_id=request.user.pk)
-        if (player.slot==slot or player.qualified==True) :
+        if (player.slot==slot or (player.qualified==True and slot==4)) :
             show=True
     rank=0
     for pl in p:
         pl.rank = cur_rank
         # pl.save()
         cur_rank += 1
-        if show==True and pl.id == request.user.id:
+        if show==True and pl.user_id == request.user.id:
             rank=pl.rank
     return render(request, 'lboard.html', {'players': p, 'rank': rank, 'is_final':is_final,'slot':slot})
 
